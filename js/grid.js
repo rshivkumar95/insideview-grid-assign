@@ -1,93 +1,91 @@
-var plotTableHeader = function(columns, id, isFlex) {
+"use strict";
 
-    var gridWrapper = document.getElementById(id);
-    var tableRow = document.createElement('div');
-    if(isFlex==false)
-        tableRow.classList.add('table-row');
-    else
-        tableRow.classList.add('table-row-flex');    
-    var row = columns.ColumnsList;
-    for(var i in row){
+var columnWidth = [];
 
-            var grid = document.createElement('div');
-            if(isFlex==false)
-                grid.classList.add('table-data');
-            else
-                grid.classList.add('table-data-flex');
-            if(row[i].isInput==true){
-                var input = document.createElement('input');
-                var att = document.createAttribute('type');
-                att.value = row[i].type;
-                input.setAttributeNode(att);
-                grid.appendChild(input);
-            }
-            else{
-                grid.innerHTML = row[i].name;
-                 gridWrapper.appendChild(grid);
-            }
-
-            tableRow.appendChild(grid);
-
+function setWidth() {
+    var columnCount;
+    for(columnCount = 1; columnCount<=columnWidth.length; columnCount+=1){
+        $(".table-row > .table-data:nth-child("+ columnCount +")").css("width",columnWidth[columnCount-1]);
     }
-    gridWrapper.appendChild(tableRow);
     
 }
 
-var plotTableContent = function(rows, id, isFlex){
+function createTableData(data,isInput,inputType) {
 
-    var gridWrapper = document.getElementById(id);
-    var keys = [];
-    
-    var row = rows.data;
-    for(var key in row[0]){
-       
-       keys.push(key);
-    }
-    for(var i in row){
-
-        var tableRow = document.createElement('div');
-        if(isFlex==false)
-            tableRow.classList.add('table-row');
-        else
-            tableRow.classList.add('table-row-flex');    
-        var grid = document.createElement('div');
-        if(isFlex==false)
-            grid.classList.add('table-data');
-        else
-            grid.classList.add('table-data-flex');
-        var input = document.createElement('input');
-        var att = document.createAttribute('type');
-        att.value = 'checkbox';
+    var grid = document.createElement("div");
+    grid.classList.add("table-data");
+    if(isInput) {
+        var input = document.createElement("input");
+        var att = document.createAttribute("type");
+        att.value = inputType;
         input.setAttributeNode(att);
         grid.appendChild(input);
-        tableRow.appendChild(grid);
-
-        for(var key in keys){
-            var grid = document.createElement('div');
-            if(isFlex==false)
-                grid.classList.add('table-data');
-            else
-                grid.classList.add('table-data-flex');
-            grid.innerHTML = row[i][keys[key]];
-            tableRow.appendChild(grid);
-        }
-        
-        gridWrapper.appendChild(tableRow);
-
     }
-
-
+    else{
+        grid.innerHTML = data;
+    }
+    return grid;
 }
 
-var getRandomColor = function() {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
+function plotTableHeader(columns, id, isFlex) {
+
+    var gridWrapper = document.getElementById(id);
+    var tableColumn= document.createElement("div");
+    var column = columns.ColumnsList;
+    var columnCount;
+    var data;
+    var isInput;
+    var type;
+    for(columnCount = 0; columnCount < column.length; columnCount+=1) {
+        data = column[columnCount].name;
+        isInput = column[columnCount].isInput;
+        type = column[columnCount].type;
+        tableColumn.appendChild(createTableData(data, isInput, type));
+        columnWidth.push(column[columnCount].width);
+        //setWidth(columnCount+1, column[columnCount].width);
     }
-    return color;
-  }
+    if(!isFlex) {
+        tableColumn.classList.add("table-row");
+    }else{
+        tableColumn.classList.add("table-row-flex");
+    }
+    gridWrapper.appendChild(tableColumn);
+    setWidth();
+}
 
-  var setWidth = function(index,size){
+function plotTableContent(rows, id, isFlex) {
 
-  }
+    var gridWrapper = document.getElementById(id);
+    var row = rows.data;
+    var key;
+    var keys = Object.keys(row[0]);
+    var rowCount;
+    var data;
+    var tableRow;
+    for(rowCount = 0; rowCount < row.length; rowCount+=1) {
+
+        tableRow = document.createElement("div");
+        if(!isFlex) {
+            tableRow.classList.add("table-row");
+        }
+        else{
+            tableRow.classList.add("table-row-flex");
+        }
+        tableRow.appendChild(createTableData("", true, "checkbox"));
+        for(key = 0; key<keys.length; key+=1) {
+            data = row[rowCount][keys[key]];
+            tableRow.appendChild(createTableData(data, false));
+        }
+        gridWrapper.appendChild(tableRow);
+        setWidth();
+    }
+}
+
+function plotTable(Columns,Rows,headerId,contentId,isFlex,wrapperId){
+    $("#"+wrapperId).load("reusable/table.html",function(){
+        $(this).children().children("div.table-header").attr("id",headerId);
+        $(this).children().children("div.table-content").attr("id",contentId);
+        plotTableHeader(Columns, headerId, isFlex);
+        plotTableContent(Rows, contentId, isFlex);
+    });    
+}

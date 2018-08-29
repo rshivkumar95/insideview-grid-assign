@@ -1,38 +1,20 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>InsideView Assignment</title>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
+        
     </head>
     <body>
-    </body>
-
-        <div class="table-wrapper">
-                <div id="table-header" class="table-header">
-                </div>
-                <div id="table-content" class="table-content">
-                    
-                </div>
+        <div id="table">
         </div>
         
-
-        <div id="table-wrapper" class="table-wrapper">
-                <h3>Using FlexBox</h3>
-                <div id="table-header-flex" class="table-header">
-                        
-                </div>
-                <div id="table-content-flex" class="table-content">
-                          
-                </div> 
-        </div>
-
         <script src="js/config.js"></script>
         <script src="js/grid.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script>
             (function(){
-                plotTableHeader(Columns,'table-header',false);
-                plotTableContent(Rows,'table-content',false);
-                plotTableHeader(Columns,'table-header-flex',true);
-                plotTableContent(Rows,'table-content-flex',true);
+                plotTable(Columns,Rows,'table-header','table-content',false,'table');
             })();
         </script>
     </body>
