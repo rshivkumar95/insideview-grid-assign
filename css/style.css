@@ -13,26 +13,32 @@
     border: 1px solid gray;
     border-radius: 5px 5px 0px 0px;
     border-bottom: none;
-
 }
 
+.table-content{
+    font-size: 0.8rem;
+    border: 1px solid gray;
+    border-radius: 0px 0px 5px 5px;
+    border-top: none;
+}
 
+.table-content > :hover{
+    background: #ecebeb;
+}
+
+.table-content > *{
+    border-bottom: 1px solid gray;
+}
 
 .table-row{
     display: table;
     clear: both;
     width: 100%;
-
 }
 
 .table-row > .table-data{
     float:left;
     width:20%;
-    padding:10px;
-    border-right: 1px solid white;
-    text-align: center;
-    height:100%;
-
 }
 
 .table-row-flex{
@@ -42,45 +48,10 @@
 
 .table-row-flex > .table-data{
     flex:20%;
+}
+
+.table-row > .table-data, .table-row-flex > .table-data{
     padding: 10px;
     text-align: center;
     border-right: 1px solid white;
-
 }
-
-
-
-.table-header > .grid{
-    border-left: 1px solid gray;
-}
-
-.table-content{
-    
-    font-size: 0.8rem;
-    border: 1px solid gray;
-    border-radius: 0px 0px 5px 5px;
-    border-top: none;
-}
-
-.table-content > *:hover{
-    background: #ecebeb;
-}
-
-
-.table-content > *{
-    border-bottom: 1px solid gray;
-}
-
-.table-data:last-child{
-    border-right:none;
-}
-
-
-
-
-
-
-
-
-
-
